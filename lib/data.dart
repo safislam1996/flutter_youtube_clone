@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class User {
   final String username;
   final String profileImageUrl;
@@ -16,7 +18,7 @@ const User currentUser = User(
       'https://yt3.ggpht.com/ytc/AAUvwniE2k5PgFu9yr4sBVEs9jdpdILdMc7ruiPw59DpS0k=s88-c-k-c0x00ffffff-no-rj',
   subscribers: '100K',
 );
-
+ 
 class Video {
   final String id;
   final User author;

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_youtube_ui/data.dart';
 import 'package:flutter_youtube_ui/screens/nav_screen.dart';
-import 'package:flutter_youtube_ui/widgets/widgets.dart';
+import 'package:flutter_youtube_ui/widgets/video_card.dart';
+import 'package:flutter_youtube_ui/widgets/video_info.dart';
 import 'package:miniplayer/miniplayer.dart';
 
 class VideoScreen extends StatefulWidget {
@@ -15,13 +16,15 @@ class _VideoScreenState extends State<VideoScreen> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     _scrollController = ScrollController();
   }
 
   @override
   void dispose() {
-    _scrollController?.dispose();
+    // TODO: implement dispose
+    _scrollController!.dispose();
     super.dispose();
   }
 
@@ -36,7 +39,6 @@ class _VideoScreenState extends State<VideoScreen> {
         body: Container(
           color: Theme.of(context).scaffoldBackgroundColor,
           child: CustomScrollView(
-            controller: _scrollController,
             shrinkWrap: true,
             slivers: [
               SliverToBoxAdapter(
@@ -55,22 +57,20 @@ class _VideoScreenState extends State<VideoScreen> {
                                 fit: BoxFit.cover,
                               ),
                               IconButton(
-                                iconSize: 30.0,
-                                icon: const Icon(Icons.keyboard_arrow_down),
-                                onPressed: () => context
-                                    .read(miniPlayerControllerProvider)
-                                    .state
-                                    .animateToHeight(state: PanelState.MIN),
-                              ),
+                                  iconSize: 30.0,
+                                  onPressed: () => context
+                                      .read(miniPlayerControllerProvider)
+                                      .state
+                                      .animateToHeight(state: PanelState.MIN),
+                                  icon: Icon(Icons.keyboard_arrow_down))
                             ],
                           ),
                           const LinearProgressIndicator(
                             value: 0.4,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.red,
-                            ),
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.red),
                           ),
-                          VideoInfo(video: selectedVideo),
+                          VideoInfo(video: selectedVideo)
                         ],
                       ),
                     );
@@ -78,21 +78,17 @@ class _VideoScreenState extends State<VideoScreen> {
                 ),
               ),
               SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final video = suggestedVideos[index];
-                    return VideoCard(
-                      video: video,
-                      hasPadding: true,
-                      onTap: () => _scrollController!.animateTo(
-                        0,
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  final video = suggestedVideos[index];
+
+                  return VideoCard(
+                    video: video,
+                    hasPadding: true,
+                    onTap: () => _scrollController!.animateTo(0,
                         duration: const Duration(milliseconds: 200),
-                        curve: Curves.easeIn,
-                      ),
-                    );
-                  },
-                  childCount: suggestedVideos.length,
-                ),
+                        curve: Curves.easeIn),
+                  );
+                }, childCount: suggestedVideos.length),
               ),
             ],
           ),
